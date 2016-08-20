@@ -5,7 +5,7 @@ namespace Orleans.CodeGeneration
     /// <summary>
     /// Methods for generating source code.
     /// </summary>
-    internal interface ISourceCodeGenerator
+    public interface ISourceCodeGenerator
     {
         /// <summary>
         /// Generates source code for the provided assembly.

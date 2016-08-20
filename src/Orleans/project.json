@@ -1,7 +1,8 @@
 {
   "version": "1.0.0-*",
   "dependencies": {
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "7.0.1",
+    "Orleans.Contracts": { "target": "project" }
   },
   "frameworks": {
     "net451": {

@@ -9,6 +9,7 @@ namespace Orleans.CodeGenerator
     using Orleans.Runtime;
     using Orleans.Serialization;
     using GrainInterfaceUtils = Orleans.CodeGeneration.GrainInterfaceUtils;
+    using Utilities;
 
     /// <summary>
     /// The serializer generation manager.

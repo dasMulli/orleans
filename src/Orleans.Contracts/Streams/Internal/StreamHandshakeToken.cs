@@ -3,7 +3,7 @@ using System;
 namespace Orleans.Streams
 {
     [Serializable]
-    internal class StreamHandshakeToken : IEquatable<StreamHandshakeToken>
+    public class StreamHandshakeToken : IEquatable<StreamHandshakeToken>
     {
         public StreamSequenceToken Token { get; private set; }
         

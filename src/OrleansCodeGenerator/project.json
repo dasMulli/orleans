@@ -1,8 +1,32 @@
 ﻿{
   "version": "1.0.0-*",
+
+  "buildOptions": {
+    "compile": {
+      "include": [
+        "*.cs",
+        "**/*.cs"
+      ],
+      "includeFiles": [
+        "../Orleans/CodeGeneration/TypeUtils.cs",
+        "../Orleans/Runtime/RuntimeVersion.cs",
+        "../Orleans/Logging/LoggerImpl.cs",
+        "../Orleans/Logging/Logger.cs",
+        "../Orleans/Logging/LogManager.cs",
+        "../Orleans/Logging/ConsoleText.cs",
+        "../Orleans/Logging/LoggerExtensions.cs",
+        "../Orleans/Logging/LogFormatter.cs",
+        "../Orleans/Logging/ErrorCodes.cs",
+        "../Orleans/Async/TaskUtility.cs",
+        "../Orleans/Telemetry/Severity.cs",
+        "../Orleans/Async/TaskExtensions.cs"
+      ]
+    }
+  },
+
   "dependencies": {
-    "Orleans": { "target": "project" },
-    "Microsoft.CodeAnalysis.CSharp" : "1.0.0"
+    "Orleans.Contracts": { "target": "project" },
+    "Microsoft.CodeAnalysis.CSharp": "1.0.0"
   },
   "frameworks": {
     "net451": {

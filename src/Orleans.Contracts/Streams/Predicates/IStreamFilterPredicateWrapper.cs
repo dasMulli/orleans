@@ -4,7 +4,7 @@
     /// Filter predicate for streams. 
     /// Classes implementing this interface MUST be [Serializable]
     /// </summary>
-    internal interface IStreamFilterPredicateWrapper
+    public interface IStreamFilterPredicateWrapper
     {
         object FilterData { get; }
 

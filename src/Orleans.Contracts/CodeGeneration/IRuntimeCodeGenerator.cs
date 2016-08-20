@@ -5,7 +5,7 @@ namespace Orleans.CodeGeneration
     /// <summary>
     /// Methods for generating code at runtime.
     /// </summary>
-    internal interface IRuntimeCodeGenerator
+    public interface IRuntimeCodeGenerator
     {
         /// <summary>
         /// Ensures that code generation has been run for the provided assembly.
