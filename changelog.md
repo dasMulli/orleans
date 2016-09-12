@@ -15,8 +15,8 @@ The idea is to track end-user facing changes as they occur.*
   More information in [#1682](https://github.com/dotnet/orleans/pull/1682) and in [#1682 (comment)](https://github.com/dotnet/orleans/pull/1682#issuecomment-234371701). 
 - Added new Amazon AWS basic Orleans providers [#2006](https://github.com/dotnet/orleans/issues/2006)
 - Moved Orleans Performance Counters into its own Telemetry Consumer. Now you need to explicitly register the `OrleansPerfCounterTelemetryConsumer` either by code or XML. More information in [#2122](https://github.com/dotnet/orleans/pull/2122) and docs will come later
-	- `Microsoft.Orleans.CounterControl` Nuget package is deprecated. When installing the new  `Microsoft.Orleans.OrleansTelemetryConsumers.Counters` which contains the telemetry consumer, you can find `OrleansCounterControl.exe` under the `tools\` directory at the packages folder. 
-	- `OrleansCounterControl.exe` usage remain the same
+	- `Microsoft.Orleans.CounterControl` Nuget package is deprecated and was removed. 
+	- In order to install Orleans Performance Counters, from the silo directory call `InstallUtil.exe OrleansTelemetryConsumers.Counters.dll`
 
   
 ### [v1.2.3]

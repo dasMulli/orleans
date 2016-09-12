@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("cf7ee78b-39e1-4660-beaf-0e2606098f8c")]
 
 [assembly: InternalsVisibleTo("ClientGenerator")]
-[assembly: InternalsVisibleTo("OrleansCounterControl")]
 [assembly: InternalsVisibleTo("OrleansRuntime")]
 [assembly: InternalsVisibleTo("OrleansHost")]
 [assembly: InternalsVisibleTo("OrleansAzureUtils")]

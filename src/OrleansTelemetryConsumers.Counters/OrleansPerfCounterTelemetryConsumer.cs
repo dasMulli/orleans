@@ -11,8 +11,7 @@ namespace OrleansTelemetryConsumers.Counters
     {
         internal const string CATEGORY_NAME = "OrleansRuntime";
         internal const string CATEGORY_DESCRIPTION = "Orleans Runtime Counters";
-        private const string CounterControlProgName = "OrleansCounterControl.exe";
-        private const string ExplainHowToCreateOrleansPerfCounters = "Run " + CounterControlProgName + " as Administrator to create perf counters for Orleans.";
+        private const string ExplainHowToCreateOrleansPerfCounters = "Run 'InstallUtil.exe OrleansTelemetryConsumers.Counters.dll' as Administrator to create perf counters for Orleans.";
 
         private static readonly Logger logger = LogManager.GetLogger("OrleansPerfCounterManager", LoggerType.Runtime);
         private static readonly List<PerfCounterConfigData> perfCounterData = new List<PerfCounterConfigData>();
@@ -99,28 +98,15 @@ namespace OrleansTelemetryConsumers.Counters
             return cd.Name.Name + "." + (cd.UseDeltaValue ? "Delta" : "Current");
         }
         
-        internal CounterCreationData[] GetCounterCreationData()
-        {
-            var ctrCreationData = new List<CounterCreationData>();
-            foreach (PerfCounterConfigData cd in perfCounterData)
-            {
-                var perfCounterName = GetPerfCounterName(cd);
-                var description = cd.Name.Name;
-
-                var msg = string.Format("Registering perf counter {0}", perfCounterName);
-                Console.WriteLine(msg);
-
-                ctrCreationData.Add(new CounterCreationData(perfCounterName, description, PerformanceCounterType.NumberOfItems32));
-            }
-            return ctrCreationData.ToArray();
-        }
-
         /// <summary>
         /// Register Orleans perf counters with Windows
         /// </summary>
         /// <remarks>Note: Program needs to be running as Administrator to be able to delete Windows perf counters.</remarks>
-        public void InstallCounters()
+        internal void InstallCounters()
         {
+            if (PerformanceCounterCategory.Exists(CATEGORY_NAME))
+                DeleteCounters();
+
             isInstalling = true;
             if (!isInitialized.Value)
             {
@@ -130,8 +116,18 @@ namespace OrleansTelemetryConsumers.Counters
             }
 
             var collection = new CounterCreationDataCollection();
-            collection.AddRange(GetCounterCreationData());
+            
+            foreach (PerfCounterConfigData cd in perfCounterData)
+            {
+                var perfCounterName = GetPerfCounterName(cd);
+                var description = cd.Name.Name;
 
+                var msg = string.Format("Registering perf counter {0}", perfCounterName);
+                Console.WriteLine(msg);
+
+                collection.Add(new CounterCreationData(perfCounterName, description, PerformanceCounterType.NumberOfItems32));
+            }
+            
             PerformanceCounterCategory.Create(
                 CATEGORY_NAME,
                 CATEGORY_DESCRIPTION,
@@ -143,7 +139,7 @@ namespace OrleansTelemetryConsumers.Counters
         /// Delete any existing perf counters registered with Windows
         /// </summary>
         /// <remarks>Note: Program needs to be running as Administrator to be able to delete Windows perf counters.</remarks>
-        public void DeleteCounters()
+        internal void DeleteCounters()
         {
             PerformanceCounterCategory.Delete(CATEGORY_NAME);
         }

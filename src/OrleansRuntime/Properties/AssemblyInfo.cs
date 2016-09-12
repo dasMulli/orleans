@@ -20,7 +20,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("UnitTestGrains")]
 [assembly: InternalsVisibleTo("LoadTestGrains")]
 [assembly: InternalsVisibleTo("UnitTests")]
-[assembly: InternalsVisibleTo("OrleansCounterControl")]
 [assembly: InternalsVisibleTo("OrleansTelemetryConsumers.Counters")]
 [assembly: InternalsVisibleTo("TesterInternal")]
 [assembly: InternalsVisibleTo("TestInternalGrains")]

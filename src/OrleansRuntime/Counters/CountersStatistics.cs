@@ -14,10 +14,7 @@ namespace Orleans.Runtime.Counters
         private const int ERROR_THRESHOLD = 10; // A totally arbitrary value!
         private SafeTimer timer;
         private bool shouldWritePerfCounters = true;
-        
-        private const string CounterControlProgName = "OrleansCounterControl.exe";
-        private const string ExplainHowToCreateOrleansPerfCounters = "Run " + CounterControlProgName + " as Administrator to create perf counters for Orleans.";
-        
+                
         public TimeSpan PerfCountersWriteInterval { get; private set; }
 
         
