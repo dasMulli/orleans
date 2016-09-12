@@ -108,7 +108,6 @@
     <Compile Include="CodeGeneratorTests.cs" />
     <Compile Include="ConcurrencyTests.cs" />
     <Compile Include="ConfigTests.cs" />
-    <Compile Include="CounterControlProgTests.cs" />
     <Compile Include="CounterTests.cs" />
     <Compile Include="DeadlockDetectionTests.cs" />
     <Compile Include="EchoTaskGrainTests.cs" />
