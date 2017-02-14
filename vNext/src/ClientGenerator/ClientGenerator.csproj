@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net462;netcoreapp1.1</TargetFramework>
+    <TargetFrameworks>net462;netcoreapp1.1</TargetFrameworks>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -25,10 +26,6 @@
   <ItemGroup>
     <Compile Include="..\Build\GlobalAssemblyInfo.cs" />
     <Compile Include="..\..\..\src\ClientGenerator\**\*.cs" Exclude="&#xD;&#xA;        ..\..\..\src\ClientGenerator\obj\**\*.cs;&#xD;&#xA;        ..\..\..\src\ClientGenerator\bin\**\*.cs;&#xD;&#xA;        ..\..\..\src\ClientGenerator\Properties\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Runtime" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
