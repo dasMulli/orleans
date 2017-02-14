@@ -7,12 +7,16 @@ namespace Orleans.CodeGeneration
     using Orleans.CodeGenerator;
     using Orleans.Runtime;
     using Orleans.Serialization;
+    using Orleans.PlatformServices;
 
     /// <summary>
     /// Generates factory, grain reference, and invoker classes for grain interfaces.
     /// Generates state object classes for grain implementation classes.
     /// </summary>
-    public class GrainClientGenerator : MarshalByRefObject
+    public class GrainClientGenerator
+#if NET46
+        : MarshalByRefObject 
+#endif
     {
         private static readonly RoslynCodeGenerator CodeGenerator = new RoslynCodeGenerator();
 
@@ -51,10 +55,13 @@ namespace Orleans.CodeGeneration
         /// </summary>
         private static bool CreateGrainClientAssembly(CodeGenOptions options)
         {
+#if !NET46
+            return new GrainClientGenerator().CreateGrainClient(options);
+#else
             AppDomain appDomain = null;
             try
             {
-                var assembly = typeof (GrainClientGenerator).GetTypeInfo().Assembly;
+                var assembly = typeof(GrainClientGenerator).GetTypeInfo().Assembly;
                 // Create AppDomain.
                 var appDomainSetup = new AppDomainSetup
                 {
@@ -81,7 +88,8 @@ namespace Orleans.CodeGeneration
             finally
             {
                 if (appDomain != null) AppDomain.Unload(appDomain); // Unload the AppDomain
-            }
+            }     
+#endif
         }
 
         /// <summary>
@@ -92,9 +100,9 @@ namespace Orleans.CodeGeneration
         {
             // Load input assembly 
             // special case Orleans.dll because there is a circular dependency.
-            var assemblyName = AssemblyName.GetAssemblyName(options.InputAssembly.FullName);
+            var assemblyName = new AssemblyName(options.InputAssembly.FullName);
             var grainAssembly = (Path.GetFileName(options.InputAssembly.FullName) != "Orleans.dll")
-                                    ? Assembly.LoadFrom(options.InputAssembly.FullName)
+                                    ? PlatformAssemblyLoader.LoadFromAssemblyPath(options.InputAssembly.FullName)
                                     : Assembly.Load(assemblyName);
 
             // Create directory for output file if it does not exist
@@ -109,7 +117,7 @@ namespace Orleans.CodeGeneration
             ConsoleText.WriteStatus("Orleans-CodeGen - Generating file {0}", options.OutputFileName);
 
             SerializationManager.RegisterBuiltInSerializers();
-            using (var sourceWriter = new StreamWriter(options.OutputFileName))
+            using (var sourceWriter = new StreamWriter(new FileStream(options.OutputFileName, FileMode.Create)))
             {
                 sourceWriter.WriteLine("#if !EXCLUDE_CODEGEN");
                 DisableWarnings(sourceWriter, suppressCompilerWarnings);
@@ -135,7 +143,7 @@ namespace Orleans.CodeGeneration
 
         public int RunMain(string[] args)
         {
-            ConsoleText.WriteStatus("Orleans-CodeGen - command-line = {0}", Environment.CommandLine);
+            ConsoleText.WriteStatus("Orleans-CodeGen - command-line = {0}", string.Join(" ", args));
 
             if (args.Length < 1)
             {
@@ -273,7 +281,7 @@ namespace Orleans.CodeGeneration
         {
             CheckPath(
                 path,
-                p => !p.EndsWith(str, StringComparison.InvariantCultureIgnoreCase),
+                p => !p.EndsWith(str, StringComparison.OrdinalIgnoreCase),
                 string.Format("Cannot end with '{0}'", str));
         }
 
@@ -286,6 +294,7 @@ namespace Orleans.CodeGeneration
             throw new ArgumentException("FAILED: " + errMsg);
         }
 
+#if NET46
 
         /// <summary>
         /// Simple class that loads the reference assemblies upon the AppDomain.AssemblyResolve
@@ -332,6 +341,7 @@ namespace Orleans.CodeGeneration
             /// <returns>The assembly that resolves the type, assembly, or resource; 
             /// or null if theassembly cannot be resolved.
             /// </returns>
+
             public Assembly ResolveAssembly(object sender, ResolveEventArgs args)
             {
                 Assembly assembly = null;
@@ -340,7 +350,9 @@ namespace Orleans.CodeGeneration
                 if (referenceAssemblyPaths.TryGetValue(asmName.Name, out path)) assembly = Assembly.LoadFrom(path);
                 else ConsoleText.WriteStatus("Could not resolve {0}:", asmName.Name);
                 return assembly;
-            }
+            } 
+
         }
+#endif
     }
 }
