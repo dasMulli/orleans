@@ -27,12 +27,14 @@
 
   <Target Name="ComputeInnerBuildProperties">
     <PropertyGroup>
-      <BootstrapOutputPath Condition="'$(BootstrapOutputPath)' == ''">$(MSBuildProjectDirectory)\bin\$(Configuration)\Bootstrap\$(TargetFramework)\</BootstrapOutputPath>
+      <BootstrapOutputPath Condition="'$(BootstrapOutputPath)' == ''">$(MSBuildProjectDirectory)\bin\$(Configuration)\Bootstrap\</BootstrapOutputPath>
+      
+      <BootstrapInnerOutputPath>$(BootstrapOutputPath)$(TargetFramework)\</BootstrapInnerOutputPath>
       <MsBuildProperties>
         Configuration=$(Configuration);
         Bootstrap=true;
-        OutputPath=$(BootstrapOutputPath);
-        IntermediateOutputPath=$(BootstrapOutputPath)obj\;
+        OutputPath=$(BootstrapInnerOutputPath);
+        IntermediateOutputPath=$(MSBuildProjectDirectory)\bin\$(Configuration)Bootstrap\$(TargetFramework)\obj\;
         DefineConstants=$(ExcludeCodegenConstants);
       </MsBuildProperties>
 
@@ -40,7 +42,7 @@
       <LibraryMsBuildProperties>$(MsBuildProperties);TargetFramework=$(LibraryTargetFramework)</LibraryMsBuildProperties>
 
       <ApplicationTargetFramework Condition=" '$(ApplicationTargetFramework)' == '' ">$(TargetFramework)</ApplicationTargetFramework>
-      <ApplicationMsBuildProperties>$(MsBuildProperties);TargetFramework=$(ApplicationTargetFramework)</ApplicationMsBuildProperties>
+      <ApplicationMsBuildProperties>$(MsBuildProperties);ApplicationTargetFramework=$(ApplicationTargetFramework)</ApplicationMsBuildProperties>
     </PropertyGroup>
   </Target>
 
